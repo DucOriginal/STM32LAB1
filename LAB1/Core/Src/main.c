@@ -106,19 +106,29 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  int counter = 0;
-  GPIOA->ODR = 0x0008;
+  clearAllClock();
+  int sec = 60, min =3600, hour =43200;
   while (1)
   {
-    /* USER CODE END WHILE */
-	  if(counter >=0 && counter <= 11)
-	    GPIOA->ODR = GPIOA->ODR << 1; // Shift the register to the left 1 bit
-	  if(counter >= 12){   // After a loop, set up again.
-	    GPIOA->ODR = 0x0010;//0b0000000000010000;
-	    counter  = 0;
-		  }
-	  counter++;
-	  HAL_Delay(1000);
+	    sec --;
+	    min --;
+	    hour --;
+	    clearAllClock();
+
+	    //display sec, min, hour every 5s,300s, and 3600s respectively.
+	    setNumberOnClock(11 - sec/5);
+	    setNumberOnClock(11 - min/300);
+	    setNumberOnClock(11 - hour/3600);
+
+	    //Return after every cycle
+	    if (sec == 0)
+	        sec = 60;
+	    if (min == 0)
+	        min = 3600;
+	    if (hour == 0)
+	        hour = 43200;
+
+	    HAL_Delay(1000);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
