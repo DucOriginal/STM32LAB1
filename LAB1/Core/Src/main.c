@@ -54,7 +54,12 @@ static void MX_GPIO_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+void clearNumberOnClock(int num){
+  if(num >= 0 && num <=11){
+   // To clear a bit, we must invert the bit string with bitwise NOT operator(~), then AND it.
+    GPIOA->ODR &= ~(1 << (num + 4));
+  }
+}
 /* USER CODE END 0 */
 
 /**
