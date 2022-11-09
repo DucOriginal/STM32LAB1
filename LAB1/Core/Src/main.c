@@ -54,7 +54,20 @@ static void MX_GPIO_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+//Segment numbers stored in array.
+//Each element represents for a displayed number (range from 0 - 9). Decoder for Common Anode.
+uint8_t segmentNumber[10] = {0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};
+void display7SEG(int num){
+    uint8_t number = segmentNumber[num];
+	//Check a nth bit by shifting n times to the right, then bitwise AND it:
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, ((number>>0)&0x01));
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, ((number>>1)&0x01));
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2, ((number>>2)&0x01));
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, ((number>>3)&0x01));
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, ((number>>4)&0x01));
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, ((number>>5)&0x01));
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, ((number>>6)&0x01));
+}
 /* USER CODE END 0 */
 
 /**
@@ -91,10 +104,51 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  int counter=9;
   while (1)
   {
     /* USER CODE END WHILE */
+	  if( counter <= -1) counter = 9;
+	  display7SEG ( counter) ;
 
+	  if(counter == 9){
+	    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, SET);
+	    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, RESET);
+	    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, RESET);
+	    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, RESET);
+	    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, RESET);
+	    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, SET);
+	    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_10, RESET);
+	    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, RESET);
+	    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, SET);
+	    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_13, SET);
+	    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_14, RESET);
+	    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, RESET);
+		  }
+	  if(counter == 6){
+	    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_8);
+	    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_9);
+	    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_13);
+	    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_14);
+		  }
+	  if(counter == 4){
+	    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_4);
+	    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_6);
+	    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_7);
+	    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_8);
+	    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_10);
+	    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_12);
+	    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_14);
+	    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_15);
+		  }
+	  if(counter == 1){
+	    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+	    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_6);
+	    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_10);
+	    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_11);
+		  }
+	  counter--;
+	  HAL_Delay (1000) ;
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
