@@ -58,6 +58,12 @@ void clearAllClock(){
     GPIOA -> ODR = 0x0000;
 }
 
+void setNumberOnClock(int num){
+  if(num >= 0 && num <=11){
+    GPIOA->ODR |= 1 << (num + 4); // Because pin A_4 has value 0.
+  }
+}
+
 void clearNumberOnClock(int num){
   if(num >= 0 && num <=11){
    // To clear a bit, we must invert the bit string with bitwise NOT operator(~), then AND it.
